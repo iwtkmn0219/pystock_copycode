@@ -137,7 +137,6 @@ class Real1Percent(RealCoin):
         uncomp = self.get_order(self.ticker)
         print(uncomp)
         self.cash = self.get_balance()
-        self.cash = 10000
         print("매도완료", self.cash)
         self.hold_flag = False
         self.wait_flag = True
