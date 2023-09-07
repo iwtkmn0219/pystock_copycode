@@ -5,6 +5,13 @@ import pyupbit
 from collections import deque
 import datetime
 import realcoin
+import logging
+
+logging.basicConfig(
+    filename="my_log.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 with open("coin_list.txt", "r") as f:
     tickers = f.readline().split()
@@ -49,17 +56,17 @@ class Consumer(threading.Thread):
                     if self.u[ticker].can_i_sell():
                         self.u[ticker].take_order()
 
-                # 1분
-                if i == (5 * 60 * 3):
+                # 10분
+                if i == (5 * 60 * 10):
                     now = datetime.datetime.now()
                     for ticker in tickers:
-                        print(
+                        logging.info(
                             f"[{now}] {ticker} : 현재가 {price_curr[ticker]}, 목표가 {self.u[ticker].price_buy}, ma {self.u[ticker].curr_ma15:.2f}/{self.u[ticker].curr_ma50:.2f}/{self.u[ticker].curr_ma120:.2f}, hold_flag {self.u[ticker].hold_flag}, wait_flag {self.u[ticker].wait_flag}"
                         )
                     i = 0
                 i += 1
-            except:
-                print("error")
+            except Exception as e:
+                logging.error(f"An error occurred: {e}", exc_info=True)
 
             time.sleep(0.2)
 
