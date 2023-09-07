@@ -39,7 +39,6 @@ class Consumer(threading.Thread):
 
                     for ticker in price_open:
                         self.u[ticker].update(price_open[ticker], price_curr[ticker])
-                    print("Update Finished")
 
                 price_curr = pyupbit.get_current_price(tickers)
 
