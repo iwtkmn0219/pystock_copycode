@@ -2,6 +2,8 @@ import pyupbit
 import time
 from collections import deque
 
+CASH = 10000
+
 
 class RealCoin(pyupbit.Upbit):
     def __init__(self, key0, key1):
@@ -87,7 +89,7 @@ class Real1Percent(RealCoin):
         self.hold_flag = False
         self.wait_flag = False
 
-        self.cash = 10000
+        self.cash = CASH
 
     def update(self, price_open, price_curr):
         # 기존에 저장된 값이 없다면, 입력된 값을 반영하겠다.
@@ -137,6 +139,7 @@ class Real1Percent(RealCoin):
         uncomp = self.get_order(self.ticker)
         print(uncomp)
         self.cash = self.get_balance()
+        self.cash = CASH
         print("매도완료", self.cash)
         self.hold_flag = False
         self.wait_flag = True
