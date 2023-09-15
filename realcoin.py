@@ -2,7 +2,7 @@ import pyupbit
 import time
 from collections import deque
 
-CASH = 10000
+CASH = 100000
 
 
 class RealCoin(pyupbit.Upbit):
