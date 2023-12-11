@@ -79,17 +79,17 @@ class Real1Percent(RealCoin):
         self.ma15 = deque(maxlen=15)
         self.ma50 = deque(maxlen=50)
         self.ma120 = deque(maxlen=120)
-
         df = pyupbit.get_ohlcv(self.ticker, interval="minute1")
         self.ma15.extend(df["close"])
         self.ma50.extend(df["close"])
         self.ma120.extend(df["close"])
 
+        self.cash = CASH
         self.price_curr = None
+
         self.hold_flag = False
         self.wait_flag = False
 
-        self.cash = CASH
 
     def update(self, price_open, price_curr):
         # 기존에 저장된 값이 없다면, 입력된 값을 반영하겠다.
@@ -127,22 +127,17 @@ class Real1Percent(RealCoin):
         print("매수주문", ret)
 
         order = self.get_order(ret["uuid"])
-        print(order)
         volume = self.get_balance(self.ticker)
 
         ret = self.sell_limit_order(self.ticker, self.price_sell, volume)
         print("매도주문", ret)
         self.hold_flag = True
+        self.wait_flag = True
 
     def take_order(self):
         # 미체결 주문 리스트 조회
         uncomp = self.get_order(self.ticker)
-        print(uncomp)
-        self.cash = self.get_balance()
-        self.cash = CASH
-        print("매도완료", self.cash)
         self.hold_flag = False
-        self.wait_flag = True
 
 
 if __name__ == "__main__":
@@ -151,5 +146,3 @@ if __name__ == "__main__":
         key1 = f.readline().strip()
 
     upbit = RealCoin(key0, key1)
-    # price = upbit.get_current_price("KRW-BTC")
-    # print(price)
